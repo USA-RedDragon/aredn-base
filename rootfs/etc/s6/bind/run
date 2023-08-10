@@ -1,0 +1,3 @@
+#!/bin/sh
+
+exec named -p 53 -u named -c /etc/bind/named.conf -g
