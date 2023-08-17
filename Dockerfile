@@ -32,9 +32,6 @@ RUN git clone https://github.com/USA-RedDragon/MeshMap.git /meshmap \
     && cd /meshmap \
     && npm ci
 
-# Workaround for Node 16
-ENV NODE_OPTIONS=--openssl-legacy-provider
-
 RUN sed -i 's/module(load="imklog")//g' /etc/rsyslog.conf
 
 # Build and install olsrd
