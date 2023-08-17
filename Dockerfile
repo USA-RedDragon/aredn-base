@@ -18,7 +18,7 @@ RUN apk add --no-cache \
     openssl \
     iproute2 \
     rsyslog \
-    bind \
+    dnsmasq \
     jq \
     gettext \
     wireguard-tools \
