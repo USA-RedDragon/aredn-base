@@ -1,0 +1,97 @@
+From a19df43bace89988b95db175c6a41e663dd82472 Mon Sep 17 00:00:00 2001
+From: Jacob McSwain <jacob.a.mcswain@gmail.com>
+Date: Fri, 13 Oct 2023 02:15:33 -0500
+Subject: [PATCH 6/7] add authentication logging
+
+---
+ auth.c   | 14 +++++++++++---
+ client.c |  6 +++++-
+ server.c |  9 +++++++--
+ 3 files changed, 23 insertions(+), 6 deletions(-)
+
+diff --git a/auth.c b/auth.c
+index 690ddb0..8393d6b 100644
+--- a/auth.c
++++ b/auth.c
+@@ -355,8 +355,10 @@ struct vtun_host * auth_server(int fd)
+ 		   if( !cs2cl(str2,chal_res) )
+ 		      break; 
+ 		   
+-		   if( !(h = find_host(host)) )
++		   if( !(h = find_host(host)) ) {
++			  vtun_syslog(LOG_ERR,"Auth failed, unknown host %s", host);
+ 		      break;
++		   }
+ 
+ 		   decrypt_chal(chal_res, h->passwd);   		
+ 	
+@@ -370,8 +372,10 @@ struct vtun_host * auth_server(int fd)
+ 		         break;
+ 		      }	
+ 		      print_p(fd,"OK FLAGS: %s\n", bf2cf(h)); 
+- 		   } else
++ 		   } else {
++			  vtun_syslog(LOG_ERR,"Auth failed, wrong password for host %s", host);
+ 		      h = NULL;
++		   }
+ 	        }
+ 		break;
+  	   }
+@@ -414,12 +418,16 @@ int auth_client(int fd, struct vtun_host *host)
+ 		      print_p(fd,"CHAL: %s\n", cl2cs(chal));
+ 
+ 		      continue;
+-	   	   }
++	   	   } else {
++			vtun_syslog(LOG_ERR,"Auth failed, server denied hostname of host %s", host->host);
++		   }
+ 		   break;	
+ 	
+ 	        case ST_CHAL:
+ 		   if( !strncmp(buf,"OK",2) && cf2bf(buf,host) )
+ 		      success = 1;
++			else
++				vtun_syslog(LOG_ERR,"Auth failed, server denied password for host %s", host->host);
+ 		   break;
+ 	   }
+ 	   break;
+diff --git a/client.c b/client.c
+index 77ad928..e05d018 100644
+--- a/client.c
++++ b/client.c
+@@ -59,7 +59,11 @@ void client(struct vtun_host *host)
+      struct sigaction sa;
+      int s, opt, reconnect;	
+ 
+-     vtun_syslog(LOG_INFO,"VTun client ver %s started",VTUN_VER);
++#ifdef HAVE_SSL
++     vtun_syslog(LOG_INFO,"VTun client SSL ver %s started",VTUN_VER);
++#else
++     vtun_syslog(LOG_INFO,"VTun client Non-SSL ver %s started",VTUN_VER);
++#endif
+ 
+      memset(&sa,0,sizeof(sa));     
+      sa.sa_handler=SIG_IGN;
+diff --git a/server.c b/server.c
+index 39dbc79..5d1bd24 100644
+--- a/server.c
++++ b/server.c
+@@ -185,8 +185,13 @@ void server(int sock)
+      sigaction(SIGPIPE,&sa,NULL);
+      sigaction(SIGUSR1,&sa,NULL);
+ 
+-     vtun_syslog(LOG_INFO,"VTUN server ver %s (%s)", VTUN_VER,
+-		 vtun.svr_type == VTUN_INETD ? "inetd" : "stand" );
++#ifdef HAVE_SSL
++     vtun_syslog(LOG_INFO,"VTun server SSL ver %s (%s)",VTUN_VER,
++        vtun.svr_type == VTUN_INETD ? "inetd" : "stand");
++#else
++     vtun_syslog(LOG_INFO,"VTun server Non-SSL ver %s (%s)",VTUN_VER,
++        vtun.svr_type == VTUN_INETD ? "inetd" : "stand");
++#endif
+ 
+      switch( vtun.svr_type ){
+ 	case VTUN_STAND_ALONE:
+-- 
+2.41.0
+

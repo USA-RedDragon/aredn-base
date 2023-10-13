@@ -1,7 +1,7 @@
-From bbf1b2e3c8fe1f16504f02d97c86d854de0a1b91 Mon Sep 17 00:00:00 2001
+From 4e59c2bafbcb0d656dda61712a55e4f1bc10425b Mon Sep 17 00:00:00 2001
 From: Jacob McSwain <jacob@mcswain.dev>
 Date: Sat, 5 Aug 2023 04:02:23 -0500
-Subject: [PATCH 2/5] fix lfd_encrypt.c for openssl 1.1
+Subject: [PATCH 2/7] fix lfd_encrypt.c for openssl 1.1
 
 ---
  lfd_encrypt.c | 91 +++++++++++++++++++++++++++------------------------
