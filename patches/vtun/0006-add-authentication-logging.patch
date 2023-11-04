@@ -1,13 +1,11 @@
-From 9c2bb44af5d7d7b439a663a0846c586da3130c4e Mon Sep 17 00:00:00 2001
+From aa7c18b7c90e649496e0367016bb025aff7d09ed Mon Sep 17 00:00:00 2001
 From: Jacob McSwain <jacob.a.mcswain@gmail.com>
-Date: Fri, 13 Oct 2023 02:15:33 -0500
+Date: Fri, 3 Nov 2023 20:03:22 -0500
 Subject: [PATCH 6/7] add authentication logging
 
 ---
- auth.c   | 14 +++++++++++---
- client.c |  6 +++++-
- server.c |  9 +++++++--
- 3 files changed, 23 insertions(+), 6 deletions(-)
+ auth.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
 diff --git a/auth.c b/auth.c
 index 690ddb0..b668ede 100644
@@ -55,43 +53,6 @@ index 690ddb0..b668ede 100644
  		   break;
  	   }
  	   break;
-diff --git a/client.c b/client.c
-index 77ad928..e05d018 100644
---- a/client.c
-+++ b/client.c
-@@ -59,7 +59,11 @@ void client(struct vtun_host *host)
-      struct sigaction sa;
-      int s, opt, reconnect;	
- 
--     vtun_syslog(LOG_INFO,"VTun client ver %s started",VTUN_VER);
-+#ifdef HAVE_SSL
-+     vtun_syslog(LOG_INFO,"VTun client SSL ver %s started",VTUN_VER);
-+#else
-+     vtun_syslog(LOG_INFO,"VTun client Non-SSL ver %s started",VTUN_VER);
-+#endif
- 
-      memset(&sa,0,sizeof(sa));     
-      sa.sa_handler=SIG_IGN;
-diff --git a/server.c b/server.c
-index 39dbc79..5d1bd24 100644
---- a/server.c
-+++ b/server.c
-@@ -185,8 +185,13 @@ void server(int sock)
-      sigaction(SIGPIPE,&sa,NULL);
-      sigaction(SIGUSR1,&sa,NULL);
- 
--     vtun_syslog(LOG_INFO,"VTUN server ver %s (%s)", VTUN_VER,
--		 vtun.svr_type == VTUN_INETD ? "inetd" : "stand" );
-+#ifdef HAVE_SSL
-+     vtun_syslog(LOG_INFO,"VTun server SSL ver %s (%s)",VTUN_VER,
-+        vtun.svr_type == VTUN_INETD ? "inetd" : "stand");
-+#else
-+     vtun_syslog(LOG_INFO,"VTun server Non-SSL ver %s (%s)",VTUN_VER,
-+        vtun.svr_type == VTUN_INETD ? "inetd" : "stand");
-+#endif
- 
-      switch( vtun.svr_type ){
- 	case VTUN_STAND_ALONE:
 -- 
 2.41.0
 
