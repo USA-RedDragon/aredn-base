@@ -16,6 +16,7 @@ RUN apk add --no-cache \
     zlib \
     lzo \
     openssl \
+    iptables \
     iproute2 \
     rsyslog \
     dnsmasq \
