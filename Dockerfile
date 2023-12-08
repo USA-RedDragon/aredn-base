@@ -22,15 +22,7 @@ RUN apk add --no-cache \
     jq \
     gettext \
     wireguard-tools \
-    nodejs \
-    npm \
-    git \
     s6
-
-# Install MeshMap dependencies
-RUN git clone https://github.com/USA-RedDragon/MeshMap.git /meshmap \
-    && cd /meshmap \
-    && npm ci
 
 RUN sed -i 's/module(load="imklog")//g' /etc/rsyslog.conf
 
