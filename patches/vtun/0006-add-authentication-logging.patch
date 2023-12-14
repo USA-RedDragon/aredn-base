@@ -1,7 +1,7 @@
-From aa7c18b7c90e649496e0367016bb025aff7d09ed Mon Sep 17 00:00:00 2001
+From 4c9e5c92b4bd348f447f90a4e5758d5524847a48 Mon Sep 17 00:00:00 2001
 From: Jacob McSwain <jacob.a.mcswain@gmail.com>
 Date: Fri, 3 Nov 2023 20:03:22 -0500
-Subject: [PATCH 6/7] add authentication logging
+Subject: [PATCH 6/6] add authentication logging
 
 ---
  auth.c | 14 +++++++++++---
