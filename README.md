@@ -1,8 +1,6 @@
 # AREDN Virtual Node Base Image
 
-This project is intended to set up a "Cloud Tunnel" for the AREDN network. It acts like a node without any RF link capabilities. The purpose is to allow a large group of users to connect to a tunnel prior to RF deployments being rolled out.
-
-This project requires Linux or WSL2 for the `/dev/net/tun` device
+This project is a part of the [AREDN Cloud Tunnel](https://github.com/USA-RedDragon/aredn-cloud-tunnel) project. Unless you're developing for the project, you probably want to go there instead.
 
 ## Updating Patches
 
