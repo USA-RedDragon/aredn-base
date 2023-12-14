@@ -2,6 +2,8 @@
 
 This project is a part of the [AREDN Cloud Tunnel](https://github.com/USA-RedDragon/aredn-cloud-tunnel) project. Unless you're developing for the project, you probably want to go there instead.
 
+This project contains DNSMasq, VTun, OLSR and a few packages to make a minimal AREDN-compatible environment. It is designed to be used as a base image for the [AREDN Cloud Tunnel](https://github.com/USA-RedDragon/aredn-cloud-tunnel).
+
 ## Updating Patches
 
 This is just a small note to myself documenting the command to update the patches.
